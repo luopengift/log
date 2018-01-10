@@ -1,6 +1,7 @@
 package log
 
 import (
+	"io"
 	"fmt"
 	"runtime"
 	"sync"
@@ -14,10 +15,6 @@ const (
 	ModeSize              //大小轮转
 )
 
-type Logger interface {
-	Write([]byte) (int, error)
-}
-
 //日志的基本配置
 type Log struct {
 	mux        *sync.Mutex
@@ -29,25 +26,25 @@ type Log struct {
 	delim      string //每条日志的分隔符
 	timeFormat string //日志时间格式
 	Formatter         //日志格式化接口,实现Format() string
-	out        Logger //日志输出点
+	out        io.Writer //日志输出点
 }
 
-func New(name string, out Logger) *Log {
+func NewLog(name string, out io.Writer) *Log {
 	return &Log{
-		mux:       new(sync.Mutex),
-		pool:      sync.Pool{New: func() interface{} { return &Content{Module: name} }},
-		name:      name,
-		mode:      ModeSync,
-		level:     DEBUG,
-		depth:     2,
-		delim:     "\n",
+		mux:        new(sync.Mutex),
+		pool:       sync.Pool{New: func() interface{} { return &Content{Module: name} }},
+		name:       name,
+		mode:       ModeSync,
+		level:      DEBUG,
+		depth:      2,
+		delim:      "\n",
 		timeFormat: time.RFC3339,
-		Formatter: &ConsoleFormat{},
-		out:       out,
+		Formatter:  &ConsoleFormat{},
+		out:        out,
 	}
 }
 
-func (l *Log) SetOutput(out Logger) {
+func (l *Log) SetOutput(out io.Writer) {
 	l.out = out
 }
 
@@ -85,7 +82,7 @@ func (l *Log) Output(lv uint8, format string, v ...interface{}) {
 	ctn.Time = time.Now().Format(l.timeFormat)
 	ctn.Level = lv
 	ctn.Module = l.name
-	ctn.body = fmt.Sprintf(format, v...)
+	ctn.Msg = fmt.Sprintf(format, v...)
 	_, ctn.File, ctn.Line, _ = runtime.Caller(l.depth)
 	msg := l.Format(ctn) + l.delim
 	fmt.Fprint(l.out, msg)

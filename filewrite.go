@@ -1,6 +1,7 @@
 package log
 
 import (
+	"io"
 	"os"
 )
 
@@ -10,7 +11,7 @@ type FileWrite struct {
 	maxSize int64
 }
 
-func NewFile(cname string, maxSize int64) Logger {
+func NewFile(cname string, maxSize int64) io.Writer {
 	w := &FileWrite{cname: cname, maxSize: maxSize}
 	w.open()
 	return w

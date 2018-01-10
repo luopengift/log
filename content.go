@@ -12,7 +12,7 @@ type Content struct {
 	Module string `json:"module,omitempty"`    //日志钩子(loghandler),默认是"__DEFAULT__"
 	File   string `json:"file,omitempty"`      //文件名
 	Line   int    `json:"line,omitempty"`      //日志行号
-	body   string `json:"body,omitempty"`
+	Msg    string `json:"message,omitempty"`
 }
 
 type Formatter interface {
@@ -23,7 +23,7 @@ type Formatter interface {
 type NullFormat struct{}
 
 func (f *NullFormat) Format(ctn *Content) string {
-	return ctn.body
+	return ctn.Msg
 }
 
 //json
@@ -37,7 +37,7 @@ func (f *JSONFormat) Format(ctn *Content) string {
 type TextFormat struct{}
 
 func (f *TextFormat) Format(ctn *Content) string {
-	return fmt.Sprintf("%s| %-5s [%s] %s:%d %s", ctn.Time, LevelMap[ctn.Level], ctn.Module, path.Base(ctn.File), ctn.Line, ctn.body)
+	return fmt.Sprintf("%s| %-5s [%s] %s:%d %s", ctn.Time, LevelMap[ctn.Level], ctn.Module, path.Base(ctn.File), ctn.Line, ctn.Msg)
 }
 
 type ConsoleFormat struct {
@@ -46,12 +46,12 @@ type ConsoleFormat struct {
 func (f *ConsoleFormat) Format(ctn *Content) string {
 	return setColor(ctn.Level, fmt.Sprintf(
 		"%s [%s] %s %s:%d %s",
-		ctn.Time, LevelMap[ctn.Level], ctn.Module, path.Base(ctn.File), ctn.Line, ctn.body,
+		ctn.Time, LevelMap[ctn.Level], ctn.Module, path.Base(ctn.File), ctn.Line, ctn.Msg,
 	))
 }
 
 type KvFormat struct{}
 
 func (f *KvFormat) Format(ctn *Content) string {
-	return fmt.Sprintf("TODO:kv format, %s", ctn.body)
+	return fmt.Sprintf("TODO:kv format, %s", ctn.Msg)
 }

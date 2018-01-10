@@ -4,15 +4,19 @@ import (
 	"fmt"
 	"os"
 	"testing"
+	"time"
 )
 
 func Test_File(t *testing.T) {
-	filelog := NewFile("test-%Y%M%D.log", 1000)
-	l := New("file_test", filelog)
+	filelog := NewFile("/tmp/test-%Y%M%D%h%m%s.log", 1000)
+	l := NewLog("file_test", filelog)
 	l.SetFormatter(&JSONFormat{})
-	l.Debug("12345")
-}
+	for i := 0; i < 10; i++ {
+		time.Sleep(400 * time.Millisecond)
+		l.Debug("%d", i)
+	}
 
+}
 
 func Test_Stdout(t *testing.T) {
 	fmt.Println("0&0=", 0|0)
@@ -21,7 +25,7 @@ func Test_Stdout(t *testing.T) {
 	fmt.Println("1&1=", 1|1)
 
 	//filelog := New("log", NewFile("test-%Y%M%D.log", 1000))
-	log := New("console", os.Stdout)
+	log := NewLog("console", os.Stdout)
 	//log.SetFormatter(&TextFormat{})
 	fmt.Println(LogMap)
 
@@ -33,3 +37,4 @@ func Test_Stdout(t *testing.T) {
 
 	Error("%s", "$$$$$")
 }
+
