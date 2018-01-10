@@ -6,12 +6,14 @@ import (
 	"testing"
 )
 
-/*
 func Test_File(t *testing.T) {
-	log := New("service")
-	log.Error("hello")
+	filelog := NewFile("test-%Y%M%D.log", 1000)
+	l := New("file_test", filelog)
+	l.SetFormatter(&JSONFormat{})
+	l.Debug("12345")
 }
-*/
+
+
 func Test_Stdout(t *testing.T) {
 	fmt.Println("0&0=", 0|0)
 	fmt.Println("0&1=", 0|1)
