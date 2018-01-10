@@ -11,3 +11,15 @@ const (
 	OFF                      //128
 	NULL  = uint8(0)
 )
+
+var LevelMap = map[uint8]string{
+	TRACE: "T",
+	DEBUG: "D",
+	INFO:  "I",
+	WARN:  "W",
+	ERROR: "E",
+	FATAL: "F",
+	PANIC: "P",
+	OFF:   "O",
+	NULL:  "N",
+}

@@ -1,26 +1,24 @@
 package log
 
 import (
-//"os"
+	"fmt"
+	"os"
 )
 
 var LogMap map[string]*Log
-
-func Register(name string) {
-	LogMap[name] = New(name, &Stdout{})
-}
 
 func GetLogger(name string) *Log {
 	if l, ok := LogMap[name]; ok {
 		return l
 	}
-	return LogMap["__DEFAULT__"]
+	return LogMap["__ROOT__"]
 }
 
-func SetLogger(name string, config string) error {
+func SetLogger(name string, l *Log) error {
 	if _, ok := LogMap[name]; ok {
-		return nil //l.Init(config)
+		return fmt.Errorf("%s is exist in logger", name)
 	}
+	LogMap[name] = l
 	return nil
 }
 
@@ -30,5 +28,6 @@ func DelLogger(name string) {
 
 func init() {
 	LogMap = make(map[string]*Log)
-	Register("__DEFAULT__")
+	SetLogger("__ROOT__", New("__ROOT__", os.Stdout))
+	GetLogger("__ROOT__").SetCallDepth(3)
 }
