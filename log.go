@@ -1,8 +1,8 @@
 package log
 
 import (
-	"io"
 	"fmt"
+	"io"
 	"runtime"
 	"sync"
 	"time"
@@ -20,19 +20,19 @@ type Log struct {
 	mux        *sync.Mutex
 	pool       sync.Pool //临时对象池
 	name       string
-	mode       int    //日志模式
-	level      uint8  //最低的告警级别
-	depth      int    //runtime.Call(depth)
-	delim      string //每条日志的分隔符
-	timeFormat string //日志时间格式
-	Formatter         //日志格式化接口,实现Format() string
+	mode       int       //日志模式
+	level      uint8     //最低的告警级别
+	depth      int       //runtime.Call(depth)
+	delim      string    //每条日志的分隔符
+	timeFormat string    //日志时间格式
+	Formatter            //日志格式化接口,实现Format() string
 	out        io.Writer //日志输出点
 }
 
 func NewLog(name string, out io.Writer) *Log {
 	return &Log{
 		mux:        new(sync.Mutex),
-		pool:       sync.Pool{New: func() interface{} { return &Content{Module: name} }},
+		pool:       sync.Pool{New: func() interface{} { return new(LogRecord) }},
 		name:       name,
 		mode:       ModeSync,
 		level:      DEBUG,
@@ -75,15 +75,17 @@ func (l *Log) SetCallDepth(depth int) {
 }
 
 func (l *Log) Output(lv uint8, format string, v ...interface{}) {
+	l.mux.Lock()
+	defer l.mux.Unlock()
 	if lv < l.level {
 		return
 	}
-	ctn := l.pool.Get().(*Content)
+	ctn := l.pool.Get().(*LogRecord)
 	ctn.Time = time.Now().Format(l.timeFormat)
 	ctn.Level = lv
 	ctn.Module = l.name
 	ctn.Msg = fmt.Sprintf(format, v...)
-	_, ctn.File, ctn.Line, _ = runtime.Caller(l.depth)
+	ctn.FuncPtr, ctn.File, ctn.Line, _ = runtime.Caller(l.depth)
 	msg := l.Format(ctn) + l.delim
 	fmt.Fprint(l.out, msg)
 	l.pool.Put(ctn)

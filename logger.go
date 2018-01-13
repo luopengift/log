@@ -22,12 +22,18 @@ func SetLogger(name string, l *Log) error {
 	return nil
 }
 
+func AddLogger(l *Log) error {
+	Logger[l.name] = l
+	return nil
+}
+
 func DelLogger(name string) {
 	delete(Logger, name)
 }
 
 func init() {
 	Logger = make(map[string]*Log)
-	SetLogger("__ROOT__", NewLog("__ROOT__", os.Stdout))
-	GetLogger("__ROOT__").SetCallDepth(3)
+	_root_ := NewLog("__ROOT__", os.Stdout)
+	_root_.SetCallDepth(3)
+	AddLogger(_root_)
 }

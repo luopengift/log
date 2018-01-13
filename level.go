@@ -8,8 +8,6 @@ const (
 	ERROR                    //16
 	FATAL                    //32
 	PANIC                    //64
-	OFF                      //128
-	NULL  = uint8(0)
 )
 
 var LevelMap = map[uint8]string{
@@ -20,6 +18,4 @@ var LevelMap = map[uint8]string{
 	ERROR: "E",
 	FATAL: "F",
 	PANIC: "P",
-	OFF:   "O",
-	NULL:  "N",
 }

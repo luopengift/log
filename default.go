@@ -6,16 +6,16 @@ func Debug(format string, v ...interface{}) {
 	GetLogger("__ROOT__").Debug(format, v...)
 }
 func Info(format string, v ...interface{}) {
-	GetLogger("__ROOT__").Debug(format, v...)
+	GetLogger("__ROOT__").Info(format, v...)
 }
 func Warn(format string, v ...interface{}) {
-	GetLogger("__ROOT__").Debug(format, v...)
+	GetLogger("__ROOT__").Warn(format, v...)
 }
 func Error(format string, v ...interface{}) {
-	GetLogger("__ROOT__").Debug(format, v...)
+	GetLogger("__ROOT__").Error(format, v...)
 }
 func Fatal(format string, v ...interface{}) {
-	GetLogger("__ROOT__").Debug(format, v...)
+	GetLogger("__ROOT__").Error(format, v...)
 }
 
 func ConsoleWithRed(format string, v ...interface{}) {
