@@ -6,7 +6,7 @@ import (
 )
 
 var Logger map[string]*Log
-var _default string
+var __default__ string
 
 func GetLogger(name string) *Log {
 	if l, ok := Logger[name]; ok {
@@ -24,11 +24,11 @@ func SetLogger(name string, l *Log) error {
 }
 
 func SetDefaultLogger(name string) {
-	_default = name
+	__default__ = name
 }
 
 func ResetDefaultLogger() {
-	_default = "__ROOT__"
+	__default__ = "__ROOT__"
 }
 
 func AddLogger(l *Log) error {
@@ -41,7 +41,7 @@ func DelLogger(name string) {
 }
 
 func init() {
-	_default = "__ROOT__"
+	__default__ = "__ROOT__"
 	Logger = make(map[string]*Log)
 
 	root := NewLog("__ROOT__", os.Stdout)

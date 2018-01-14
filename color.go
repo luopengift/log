@@ -1,6 +1,3 @@
-/**
-  打印字符颜色
-*/
 package log
 
 import (
@@ -16,53 +13,53 @@ const (
 	__BLUE2__                      //湖蓝
 )
 
-func Color(col uint8, s interface{}) string {
+func color(col uint8, s interface{}) string {
 	return fmt.Sprintf("\x1b[%dm%v\x1b[0m", col, s)
 }
 
-func None(v interface{}) string {
+func none(v interface{}) string {
 	return fmt.Sprintf("%v", v)
 }
 
-func Red(v interface{}) string {
-	return Color(__RED__, v)
+func red(v interface{}) string {
+	return color(__RED__, v)
 }
 
-func Green(v interface{}) string {
-	return Color(__GREEN__, v)
+func green(v interface{}) string {
+	return color(__GREEN__, v)
 }
 
-func Yellow(v interface{}) string {
-	return Color(__YELLOW__, v)
+func yellow(v interface{}) string {
+	return color(__YELLOW__, v)
 }
 
-func Blue(v interface{}) string {
-	return Color(__BLUE__, v)
+func blue(v interface{}) string {
+	return color(__BLUE__, v)
 }
 
-func Magenta(v interface{}) string {
-	return Color(__MAGENTA__, v)
+func magenta(v interface{}) string {
+	return color(__MAGENTA__, v)
 }
 
-func Blue2(v interface{}) string {
-	return Color(__BLUE2__, v)
+func blue2(v interface{}) string {
+	return color(__BLUE2__, v)
 }
 
 func setColor(lv uint8, v interface{}) string {
 	switch lv {
 	case TRACE:
-		return Green(v)
+		return green(v)
 	case DEBUG:
-		return Blue(v)
+		return blue(v)
 	case INFO:
-		return None(v)
+		return none(v)
 	case WARN:
-		return Yellow(v)
+		return yellow(v)
 	case ERROR:
-		return Magenta(v)
+		return magenta(v)
 	case PANIC:
-		return Red(v)
+		return red(v)
 	default:
-		return Blue2(v)
+		return blue2(v)
 	}
 }

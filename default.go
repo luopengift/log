@@ -3,42 +3,42 @@ package log
 import "fmt"
 
 func Debug(format string, v ...interface{}) {
-	GetLogger("__ROOT__").Debug(format, v...)
+	GetLogger(__default__).Debug(format, v...)
 }
 func Info(format string, v ...interface{}) {
-	GetLogger("__ROOT__").Info(format, v...)
+	GetLogger(__default__).Info(format, v...)
 }
 func Warn(format string, v ...interface{}) {
-	GetLogger("__ROOT__").Warn(format, v...)
+	GetLogger(__default__).Warn(format, v...)
 }
 func Error(format string, v ...interface{}) {
-	GetLogger("__ROOT__").Error(format, v...)
+	GetLogger(__default__).Error(format, v...)
 }
 func Fatal(format string, v ...interface{}) {
-	GetLogger("__ROOT__").Error(format, v...)
+	GetLogger(__default__).Error(format, v...)
 }
 
 func ConsoleWithRed(format string, v ...interface{}) {
 	msg := fmt.Sprintf(format, v...)
-	fmt.Println(Red(msg))
+	fmt.Println(red(msg))
 }
 
 func ConsoleWithGreen(format string, v ...interface{}) {
 	msg := fmt.Sprintf(format, v...)
-	fmt.Println(Green(msg))
+	fmt.Println(green(msg))
 }
 
 func ConsoleWithYellow(format string, v ...interface{}) {
 	msg := fmt.Sprintf(format, v...)
-	fmt.Println(Yellow(msg))
+	fmt.Println(yellow(msg))
 }
 
 func ConsoleWithBlue(format string, v ...interface{}) {
 	msg := fmt.Sprintf(format, v...)
-	fmt.Println(Blue(msg))
+	fmt.Println(blue(msg))
 }
 
 func ConsoleWithMagenta(format string, v ...interface{}) {
 	msg := fmt.Sprintf(format, v...)
-	fmt.Println(Magenta(msg))
+	fmt.Println(magenta(msg))
 }

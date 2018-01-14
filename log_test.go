@@ -20,6 +20,7 @@ func Test_File(t *testing.T) {
 
 func Test_Stdout(t *testing.T) {
 	log := NewLog("console", os.Stdout)
+	log.SetFormatter(NewTextFormat("TIME LEVEL MODULE PATH FILE:FUNCNAME:LINE MESSAGE", 1))
 	fmt.Println(Logger)
 
 	log.Debug("DEUBG")

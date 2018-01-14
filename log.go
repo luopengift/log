@@ -1,3 +1,4 @@
+// Package log implements a logging package.
 package log
 
 import (
@@ -43,27 +44,38 @@ func NewLog(name string, out io.Writer) *Log {
 	}
 }
 
+// SetOutput sets the output destination for Log.
 func (l *Log) SetOutput(out io.Writer) {
 	l.out = out
 }
 
+// SetTimeFormat sets the output time format for Log.
+// Default is RFC3339.
 func (l *Log) SetTimeFormat(timeFormat string) {
 	l.timeFormat = timeFormat
 }
+
+// SetFormatter sets the output log format for Log.
+// Input params must implement Formatter interface.
+// Default is NewTextFormat(DEFAULT_FORMAT, 0).
 func (l *Log) SetFormatter(format Formatter) {
 	l.Formatter = format
 }
 
-// SetLevel Default is DEBUG
+// SetLevel sets the output level for Log.
+// Default is DEBUG
 func (l *Log) SetLevel(level uint8) {
 	l.level = level
 }
 
+// SetMode sets the output mode for Log.
+// Default is. TODO.
 func (l *Log) SetMode(mode int) {
 	l.mode = mode
 }
 
-// SetDelim SetDelim is set the split of log. Default is "\n"
+// SetDelim sets the output split of Log.
+// Default is "\n".
 func (l *Log) SetDelim(delim string) {
 	l.delim = delim
 }
@@ -73,6 +85,7 @@ func (l *Log) SetCallDepth(depth int) {
 	l.depth = depth
 }
 
+// Output writes the output for a logging event.
 func (l *Log) Output(lv uint8, format string, v ...interface{}) {
 	l.mux.Lock()
 	defer l.mux.Unlock()
@@ -90,18 +103,27 @@ func (l *Log) Output(lv uint8, format string, v ...interface{}) {
 	l.pool.Put(ctn)
 }
 
+// Debug calls l.Output to write the log as level debug.
 func (l *Log) Debug(format string, v ...interface{}) {
 	l.Output(DEBUG, format, v...)
 }
+
+// Info calls l.Output to write the log as level info.
 func (l *Log) Info(format string, v ...interface{}) {
 	l.Output(INFO, format, v...)
 }
+
+// Warn calls l.Output to write the log as level warn.
 func (l *Log) Warn(format string, v ...interface{}) {
 	l.Output(WARN, format, v...)
 }
+
+// Error calls l.Output to write the log as level error.
 func (l *Log) Error(format string, v ...interface{}) {
 	l.Output(ERROR, format, v...)
 }
+
+// Fatal calls l.Output to write the log as level fatal.
 func (l *Log) Fatal(format string, v ...interface{}) {
 	l.Output(FATAL, format, v...)
 }
