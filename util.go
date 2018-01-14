@@ -41,4 +41,3 @@ func FuncName(pc uintptr) string {
 	}
 	return name
 }
-

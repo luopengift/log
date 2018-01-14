@@ -1,9 +1,9 @@
 package log
 
 import (
-	"encoding/json"
-	"fmt"
 	"path"
+	"strconv"
+	"strings"
 )
 
 type LogRecord struct {
@@ -16,44 +16,14 @@ type LogRecord struct {
 	Msg     string  `json:"message,omitempty"`
 }
 
-type Formatter interface {
-	Format(ctn *LogRecord) string
+func (rcd *LogRecord) Format(str string) string {
+	str = strings.Replace(str, "TIME", rcd.Time, -1)
+	str = strings.Replace(str, "LEVEL", LevelMap[rcd.Level], -1)
+	str = strings.Replace(str, "MODULE", rcd.Module, -1)
+	str = strings.Replace(str, "FUNCNAME", FuncName(rcd.FuncPtr), -1)
+	str = strings.Replace(str, "PATH", path.Dir(rcd.File), -1)
+	str = strings.Replace(str, "FILE", path.Base(rcd.File), -1)
+	str = strings.Replace(str, "LINE", strconv.Itoa(rcd.Line), -1)
+	str = strings.Replace(str, "MESSAGE", rcd.Msg, -1)
+	return str
 }
-
-// This is equal fmt.Sprintf()
-type NullFormat struct{}
-
-func (f *NullFormat) Format(ctn *LogRecord) string {
-	return ctn.Msg
-}
-
-//json
-type JSONFormat struct{}
-
-func (f *JSONFormat) Format(ctn *LogRecord) string {
-	b, _ := json.Marshal(ctn)
-	return string(b)
-}
-
-type TextFormat struct{}
-
-func (f *TextFormat) Format(ctn *LogRecord) string {
-	return fmt.Sprintf("%s| %s [%s] %s %s:%d %s", ctn.Time, LevelMap[ctn.Level], ctn.Module, FuncName(ctn.FuncPtr), path.Base(ctn.File), ctn.Line, ctn.Msg)
-}
-
-type ConsoleFormat struct {}
-
-func (f *ConsoleFormat) Format(ctn *LogRecord) string {
-	return setColor(ctn.Level, fmt.Sprintf(
-		"%s [%s] %s %s %s:%d %s",
-		ctn.Time, LevelMap[ctn.Level], ctn.Module, FuncName(ctn.FuncPtr), path.Base(ctn.File), ctn.Line, ctn.Msg,
-	))
-}
-
-type KvFormat struct{}
-
-func (f *KvFormat) Format(ctn *LogRecord) string {
-	return fmt.Sprintf("TODO:kv format, %s", ctn.Msg)
-}
-
-

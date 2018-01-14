@@ -14,7 +14,8 @@ type FileWriter interface {
 type FileWrite struct {
 	fd       *os.File
 	cname    string //config name
-	curName  string //real name
+	curPath  string //real path
+	curFile  string //real name
 	maxBytes int
 	curBytes int
 	maxLines int
@@ -48,8 +49,8 @@ func (w *FileWrite) Name() string {
 }
 
 func (w *FileWrite) open() (err error) {
-	w.curName = w.Name()
-	w.fd, err = os.OpenFile(w.curName, os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0644)
+	w.curFile = w.Name()
+	w.fd, err = os.OpenFile(w.curFile, os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0644)
 	return
 }
 
@@ -62,7 +63,7 @@ func (w *FileWrite) rorate() error {
 }
 
 func (w *FileWrite) Write(p []byte) (int, error) {
-	if w.curName != w.Name() {
+	if w.curFile != w.Name() {
 		w.rorate()
 	}
 	if w.maxBytes > 0 && w.maxBytes <= w.curBytes || w.maxLines > 0 && w.maxLines <= w.curBytes {
@@ -78,8 +79,4 @@ func (w *FileWrite) Write(p []byte) (int, error) {
 	w.curBytes += n
 	w.curLines += 1
 	return n, err
-}
-
-func (w *FileWrite) Flush() error {
-	return nil
 }

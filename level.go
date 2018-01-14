@@ -19,4 +19,3 @@ var LevelMap = map[uint8]string{
 	FATAL: "F",
 	PANIC: "P",
 }
-
