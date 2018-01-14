@@ -62,7 +62,6 @@ func (w *FileWrite) rorate() error {
 }
 
 func (w *FileWrite) Write(p []byte) (int, error) {
-	println(w.curName, w.Name())
 	if w.curName != w.Name() {
 		w.rorate()
 	}

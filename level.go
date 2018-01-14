@@ -1,13 +1,13 @@
 package log
 
 const (
-	TRACE = uint8(1 << iota) //1
-	DEBUG                    //2
-	INFO                     //4
-	WARN                     //8
-	ERROR                    //16
-	FATAL                    //32
-	PANIC                    //64
+	DEBUG = uint8(1 << iota)
+	INFO
+	WARN
+	ERROR
+	FATAL
+	PANIC
+	TRACE
 )
 
 var LevelMap = map[uint8]string{
@@ -19,3 +19,4 @@ var LevelMap = map[uint8]string{
 	FATAL: "F",
 	PANIC: "P",
 }
+

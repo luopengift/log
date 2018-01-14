@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"runtime"
+	"runtime/debug"
 	"sync"
 	"time"
 )
@@ -91,10 +92,6 @@ func (l *Log) Output(lv uint8, format string, v ...interface{}) {
 	l.pool.Put(ctn)
 }
 
-// 输出当前堆栈信息
-func (l *Log) Trace(format string, v ...interface{}) {
-	l.Output(TRACE, format, v...)
-}
 func (l *Log) Debug(format string, v ...interface{}) {
 	l.Output(DEBUG, format, v...)
 }
@@ -109,6 +106,12 @@ func (l *Log) Error(format string, v ...interface{}) {
 }
 func (l *Log) Fatal(format string, v ...interface{}) {
 	l.Output(FATAL, format, v...)
+}
+
+// 输出当前堆栈信息
+func (l *Log) Trace(format string, v ...interface{}) {
+	debug.PrintStack()
+	l.Output(TRACE, format, v...)
 }
 
 // panic: 并且打印当前堆栈信息

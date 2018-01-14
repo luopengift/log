@@ -9,7 +9,7 @@ import (
 type LogRecord struct {
 	Time    string  `json:"timesatmp,omitempty"` //时间
 	Level   uint8   `json:"level,omitempty"`     //日志级别
-	Module  string  `json:"module,omitempty"`    //日志钩子(loghandler),默认是"__DEFAULT__"
+	Module  string  `json:"module,omitempty"`    //日志钩子(loghandler),默认是"__ROOT__"
 	FuncPtr uintptr `json:"funcPtr,omitempty"`   //函数名
 	File    string  `json:"file,omitempty"`      //文件名
 	Line    int     `json:"line,omitempty"`      //日志行号
@@ -38,11 +38,10 @@ func (f *JSONFormat) Format(ctn *LogRecord) string {
 type TextFormat struct{}
 
 func (f *TextFormat) Format(ctn *LogRecord) string {
-	return fmt.Sprintf("%s| %-5s [%s] %s %s:%d %s", ctn.Time, LevelMap[ctn.Level], ctn.Module, FuncName(ctn.FuncPtr), path.Base(ctn.File), ctn.Line, ctn.Msg)
+	return fmt.Sprintf("%s| %s [%s] %s %s:%d %s", ctn.Time, LevelMap[ctn.Level], ctn.Module, FuncName(ctn.FuncPtr), path.Base(ctn.File), ctn.Line, ctn.Msg)
 }
 
-type ConsoleFormat struct {
-}
+type ConsoleFormat struct {}
 
 func (f *ConsoleFormat) Format(ctn *LogRecord) string {
 	return setColor(ctn.Level, fmt.Sprintf(
@@ -56,3 +55,5 @@ type KvFormat struct{}
 func (f *KvFormat) Format(ctn *LogRecord) string {
 	return fmt.Sprintf("TODO:kv format, %s", ctn.Msg)
 }
+
+
