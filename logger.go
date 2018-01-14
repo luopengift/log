@@ -45,5 +45,6 @@ func init() {
 	Logger = make(map[string]*Log)
 
 	root := NewLog("__ROOT__", os.Stdout)
+	root.SetFormatter(NewTextFormat(DEFAULT_FORMAT, 1))
 	AddLogger(root)
 }

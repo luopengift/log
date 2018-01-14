@@ -12,8 +12,6 @@ import (
 const (
 	ModeSync  = 1 << iota //同步
 	ModeAsync             //异步
-	ModeTime              //时间轮转
-	ModeSize              //大小轮转
 )
 
 //日志的基本配置
@@ -40,7 +38,7 @@ func NewLog(name string, out io.Writer) *Log {
 		depth:      2,
 		delim:      "\n",
 		timeFormat: time.RFC3339,
-		Formatter:  &ConsoleFormat{},
+		Formatter:  NewTextFormat(DEFAULT_FORMAT, 0),
 		out:        out,
 	}
 }

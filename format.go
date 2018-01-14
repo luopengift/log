@@ -7,6 +7,10 @@ import (
 
 const DEFAULT_FORMAT = "TIME [LEVEL] FILE:LINE MESSAGE"
 
+const (
+	ModeColor = 1 << iota
+)
+
 type Formatter interface {
 	Format(rcd *LogRecord) string
 }
@@ -28,40 +32,19 @@ func (f *JSONFormat) Format(rcd *LogRecord) string {
 
 type TextFormat struct {
 	format string
+	mode   int
 }
 
-func NewTextFormat(f ...string) Formatter {
-	format := ""
-	if len(f) == 0 {
-		format = DEFAULT_FORMAT
-	} else {
-		format = f[0]
-	}
-
-	return &TextFormat{format: format}
+func NewTextFormat(f string, mode int) Formatter {
+	return &TextFormat{format: f, mode: mode}
 }
 
 func (f *TextFormat) Format(rcd *LogRecord) string {
-	return rcd.Format(f.format)
-}
-
-type ConsoleFormat struct {
-	format string
-}
-
-func NewConsoleFormat(f ...string) Formatter {
-	format := ""
-	if len(f) == 0 {
-		format = DEFAULT_FORMAT
-	} else {
-		format = f[0]
-	}
-
-	return &ConsoleFormat{format: format}
-}
-func (f *ConsoleFormat) Format(rcd *LogRecord) string {
 	msg := rcd.Format(f.format)
-	return setColor(rcd.Level, msg)
+	if f.mode&ModeColor != 0 {
+		return setColor(rcd.Level, msg)
+	}
+	return msg
 }
 
 type KvFormat struct{}
