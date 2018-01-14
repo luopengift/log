@@ -46,5 +46,6 @@ func init() {
 
 	root := NewLog("__ROOT__", os.Stdout)
 	root.SetFormatter(NewTextFormat(DEFAULT_FORMAT, 1))
+	root.SetCallDepth(3)
 	AddLogger(root)
 }
