@@ -139,3 +139,8 @@ func (l *Log) Panic(format string, v ...interface{}) {
 	l.Output(PANIC, format, v...)
 	panic(fmt.Sprintf(format, v...))
 }
+
+// Errorf implement error interface
+func (l *Log) Errorf(format string, v ...interface{}) error {
+	return fmt.Errorf(format, v...)
+}
