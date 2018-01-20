@@ -6,6 +6,7 @@ import (
 	"strings"
 )
 
+// LogRecord defines a log message struct.
 type LogRecord struct {
 	Time    string  `json:"timesatmp,omitempty"` //时间
 	Level   uint8   `json:"level,omitempty"`     //日志级别
@@ -16,6 +17,14 @@ type LogRecord struct {
 	Msg     string  `json:"message,omitempty"`
 }
 
+// Format formats LogRecord to a string as required format.
+// TIME: time field
+// LEVEL: log message level
+// MODULE: log handler, if used. Default is __default__
+// FUNCNAME: log function name
+// PATH: log file path
+// LINE: log line
+// MESSAGE: log message
 func (rcd *LogRecord) Format(str string) string {
 	str = strings.Replace(str, "TIME", rcd.Time, -1)
 	str = strings.Replace(str, "LEVEL", LevelMap[rcd.Level], -1)

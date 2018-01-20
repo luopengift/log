@@ -5,12 +5,12 @@ import (
 )
 
 const (
-	__RED__     = uint8(iota + 91) //红色
-	__GREEN__                      //绿色
-	__YELLOW__                     //黄色
-	__BLUE__                       //蓝色
-	__MAGENTA__                    //洋红
-	__BLUE2__                      //湖蓝
+	_RED     = uint8(iota + 91) //红色
+	_GREEN                      //绿色
+	_YELLOW                     //黄色
+	_BLUE                       //蓝色
+	_MAGENTA                    //洋红
+	_BLUE2                      //湖蓝
 )
 
 func color(col uint8, s interface{}) string {
@@ -22,27 +22,27 @@ func none(v interface{}) string {
 }
 
 func red(v interface{}) string {
-	return color(__RED__, v)
+	return color(_RED, v)
 }
 
 func green(v interface{}) string {
-	return color(__GREEN__, v)
+	return color(_GREEN, v)
 }
 
 func yellow(v interface{}) string {
-	return color(__YELLOW__, v)
+	return color(_YELLOW, v)
 }
 
 func blue(v interface{}) string {
-	return color(__BLUE__, v)
+	return color(_BLUE, v)
 }
 
 func magenta(v interface{}) string {
-	return color(__MAGENTA__, v)
+	return color(_MAGENTA, v)
 }
 
 func blue2(v interface{}) string {
-	return color(__BLUE2__, v)
+	return color(_BLUE2, v)
 }
 
 func setColor(lv uint8, v interface{}) string {

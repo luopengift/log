@@ -15,7 +15,7 @@ const (
 	ModeAsync             //异步
 )
 
-//日志的基本配置
+// Log
 type Log struct {
 	mux        *sync.Mutex
 	pool       sync.Pool //临时对象池
@@ -29,6 +29,7 @@ type Log struct {
 	out        io.Writer //日志输出点
 }
 
+// NewLog init a log with default config.
 func NewLog(name string, out io.Writer) *Log {
 	return &Log{
 		mux:        new(sync.Mutex),
@@ -103,6 +104,13 @@ func (l *Log) Output(lv uint8, format string, v ...interface{}) {
 	l.pool.Put(ctn)
 }
 
+// Trace calls l.Output to write the log as level trace,
+// and print stack information to stdout.
+func (l *Log) Trace(format string, v ...interface{}) {
+	debug.PrintStack()
+	l.Output(TRACE, format, v...)
+}
+
 // Debug calls l.Output to write the log as level debug.
 func (l *Log) Debug(format string, v ...interface{}) {
 	l.Output(DEBUG, format, v...)
@@ -126,12 +134,6 @@ func (l *Log) Error(format string, v ...interface{}) {
 // Fatal calls l.Output to write the log as level fatal.
 func (l *Log) Fatal(format string, v ...interface{}) {
 	l.Output(FATAL, format, v...)
-}
-
-// 输出当前堆栈信息
-func (l *Log) Trace(format string, v ...interface{}) {
-	debug.PrintStack()
-	l.Output(TRACE, format, v...)
 }
 
 // panic: 并且打印当前堆栈信息

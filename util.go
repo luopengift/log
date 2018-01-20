@@ -17,6 +17,7 @@ var (
 	}
 )
 
+// NameWithTime formats string by time.
 func NameWithTime(str string) string {
 	for k, v := range m {
 		str = strings.Replace(str, k, time.Now().Format(v), -1)
@@ -24,6 +25,7 @@ func NameWithTime(str string) string {
 	return str
 }
 
+// FuncName get function name.
 func FuncName(pc uintptr) string {
 	fn := runtime.FuncForPC(pc)
 	if fn == nil {

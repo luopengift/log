@@ -5,12 +5,14 @@ import (
 	"strconv"
 )
 
+// FileWriter implements io.Writer interface,
 type FileWriter interface {
 	Write([]byte) (int, error)
 	SetMaxBytes(int)
 	SetMaxLines(int)
 }
 
+// FileWrite implements FileWriter interface.
 type FileWrite struct {
 	fd       *os.File
 	cname    string //config name
@@ -23,20 +25,24 @@ type FileWrite struct {
 	cnt      int //count
 }
 
+// NewFile
 func NewFile(cname string) FileWriter {
 	w := &FileWrite{cname: cname}
 	w.open()
 	return w
 }
 
+// SetMaxBytes set max bytes to rorate.
 func (w *FileWrite) SetMaxBytes(maxBytes int) {
 	w.maxBytes = maxBytes
 }
 
+//SetMaxLines sets max lines to rorate.
 func (w *FileWrite) SetMaxLines(maxLines int) {
 	w.maxLines = maxLines
 }
 
+// Name gets current filename log
 func (w *FileWrite) Name() string {
 	name := NameWithTime(w.cname)
 	if w.maxBytes > 0 || w.maxLines > 0 {
@@ -62,6 +68,7 @@ func (w *FileWrite) rorate() error {
 	return w.open()
 }
 
+// Write
 func (w *FileWrite) Write(p []byte) (int, error) {
 	if w.curFile != w.Name() {
 		w.rorate()

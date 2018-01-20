@@ -5,40 +5,54 @@ import (
 	"io/ioutil"
 )
 
+// SetTextFormat sets log message format
 func SetTextFormat(format string, mode int) {
-	GetLogger(__default__).SetFormatter(NewTextFormat(format, mode))
+	GetLogger(_Default).SetFormatter(NewTextFormat(format, mode))
 }
 
+// SetTimeFormat sets time format, if TIME is enabled.
 func SetTimeFormat(format string) {
-	GetLogger(__default__).SetTimeFormat(format)
+	GetLogger(_Default).SetTimeFormat(format)
 }
 
+// Trace calls default output to write the log as level trace.
+func Trace(format string, v ...interface{}) {
+	GetLogger(_Default).Trace(format, v...)
+}
+
+// Debug calls default output to write the log as level debug.
 func Debug(format string, v ...interface{}) {
-	GetLogger(__default__).Debug(format, v...)
+	GetLogger(_Default).Debug(format, v...)
 }
 
+// Info calls default output to write the log as level info.
 func Info(format string, v ...interface{}) {
-	GetLogger(__default__).Info(format, v...)
+	GetLogger(_Default).Info(format, v...)
 }
 
+// Warn calls default output to write the log as level warn.
 func Warn(format string, v ...interface{}) {
-	GetLogger(__default__).Warn(format, v...)
+	GetLogger(_Default).Warn(format, v...)
 }
 
+// Error calls default output to write the log as level error.
 func Error(format string, v ...interface{}) {
-	GetLogger(__default__).Error(format, v...)
+	GetLogger(_Default).Error(format, v...)
 }
 
+// Fatal calls default output to write the log as level fatal.
 func Fatal(format string, v ...interface{}) {
-	GetLogger(__default__).Error(format, v...)
+	GetLogger(_Default).Error(format, v...)
 }
 
+// Panic calls default output to write the log as level panic.
 func Panic(format string, v ...interface{}) {
-	GetLogger(__default__).Panic(format, v...)
+	GetLogger(_Default).Panic(format, v...)
 }
 
+// Errorf returns error interface with error message.
 func Errorf(format string, v ...interface{}) error {
-	return GetLogger(__default__).Errorf(format, v...)
+	return GetLogger(_Default).Errorf(format, v...)
 }
 
 // OutputWithFile write to file, It truncates file before writing.
@@ -47,26 +61,31 @@ func OutputWithFile(name string, format string, v ...interface{}) error {
 	return ioutil.WriteFile(name, []byte(msg), 0644)
 }
 
+// ConsoleWithRed write message to stdout with red color
 func ConsoleWithRed(format string, v ...interface{}) {
 	msg := fmt.Sprintf(format, v...)
 	fmt.Println(red(msg))
 }
 
+// ConsoleWithRed write message to stdout with red color
 func ConsoleWithGreen(format string, v ...interface{}) {
 	msg := fmt.Sprintf(format, v...)
 	fmt.Println(green(msg))
 }
 
+// ConsoleWithYellow write message to stdout with yellow color.
 func ConsoleWithYellow(format string, v ...interface{}) {
 	msg := fmt.Sprintf(format, v...)
 	fmt.Println(yellow(msg))
 }
 
+// ConsoleWithBlue write message to stdout with blue color.
 func ConsoleWithBlue(format string, v ...interface{}) {
 	msg := fmt.Sprintf(format, v...)
 	fmt.Println(blue(msg))
 }
 
+// ConsoleWithMagenta write message to stdout with magenta color.
 func ConsoleWithMagenta(format string, v ...interface{}) {
 	msg := fmt.Sprintf(format, v...)
 	fmt.Println(magenta(msg))

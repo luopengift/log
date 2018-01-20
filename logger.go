@@ -6,8 +6,10 @@ import (
 )
 
 var Logger map[string]*Log
-var __default__ string
+var _Default string
 
+// GetLogger get Log with name,
+// if not set then returns default Log.
 func GetLogger(name string) *Log {
 	if l, ok := Logger[name]; ok {
 		return l
@@ -15,6 +17,7 @@ func GetLogger(name string) *Log {
 	return Logger["__ROOT__"]
 }
 
+// SetLogger update Log.
 func SetLogger(name string, l *Log) error {
 	if _, ok := Logger[name]; ok {
 		return fmt.Errorf("%s is exist in logger", name)
@@ -23,25 +26,29 @@ func SetLogger(name string, l *Log) error {
 	return nil
 }
 
+// SetDefaultLogger set default Log with named Log.
 func SetDefaultLogger(name string) {
-	__default__ = name
+	_Default = name
 }
 
+// ResetDefaultLogger set default Log with __ROOT__.
 func ResetDefaultLogger() {
-	__default__ = "__ROOT__"
+	_Default = "__ROOT__"
 }
 
+// AddLogger add a Log to Logger.
 func AddLogger(l *Log) error {
 	Logger[l.name] = l
 	return nil
 }
 
+// DelLogger delete a named Log.
 func DelLogger(name string) {
 	delete(Logger, name)
 }
 
 func init() {
-	__default__ = "__ROOT__"
+	_Default = "__ROOT__"
 	Logger = make(map[string]*Log)
 
 	root := NewLog("__ROOT__", os.Stdout)
