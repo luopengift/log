@@ -3,7 +3,7 @@ package log
 import (
 	"bytes"
 	"fmt"
-	"log"
+	//	"log"
 	"reflect"
 	"runtime"
 )
@@ -45,7 +45,7 @@ func display(displayed bool, data ...interface{}) string {
 	}
 
 	if displayed {
-		log.Print(buf)
+		fmt.Print(buf)
 	}
 	return buf.String()
 }

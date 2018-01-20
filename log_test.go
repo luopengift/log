@@ -5,6 +5,7 @@ import (
 	"os"
 	"testing"
 )
+
 func Test_Default(t *testing.T) {
 	Info("Debug")
 	Warn("watn")
@@ -34,5 +35,5 @@ func Test_Stdout(t *testing.T) {
 	log.Fatal("FATAL")
 
 	Error("%s", "$$$$$")
-	//Display("log", log)
+	Display("log", log)
 }
