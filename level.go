@@ -1,7 +1,7 @@
 package log
 
+// DEBUG level debug
 const (
-	// DEBUG level debug
 	DEBUG = uint8(1 << iota)
 	TRACE
 	INFO

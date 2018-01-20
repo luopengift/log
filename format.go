@@ -8,7 +8,7 @@ import (
 const (
 	// DEFAULTFORMAT default log message format.
 	DEFAULTFORMAT = "TIME [LEVEL] FILE:LINE MESSAGE"
-	// ModeColor
+	// ModeColor color mode.
 	ModeColor = 1 << iota
 )
 

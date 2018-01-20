@@ -5,8 +5,12 @@ import (
 	"os"
 )
 
-var Logger map[string]*Log
-var _Default string
+var (
+	// Logger manage mutli log handler
+	Logger map[string]*Log
+	// _Default name with default log handler
+	_Default string
+)
 
 // GetLogger get Log with name,
 // if not set then returns default Log.
