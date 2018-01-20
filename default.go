@@ -67,7 +67,7 @@ func ConsoleWithRed(format string, v ...interface{}) {
 	fmt.Println(red(msg))
 }
 
-// ConsoleWithRed write message to stdout with red color
+// ConsoleWithGreen write message to stdout with red color
 func ConsoleWithGreen(format string, v ...interface{}) {
 	msg := fmt.Sprintf(format, v...)
 	fmt.Println(green(msg))

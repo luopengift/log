@@ -11,11 +11,13 @@ import (
 )
 
 const (
-	ModeSync  = 1 << iota //同步
-	ModeAsync             //异步
+	// ModeSync log flush mode
+	ModeSync = 1 << iota //同步
+	// ModeAsync log flush mode
+	ModeAsync //异步
 )
 
-// Log
+// Log handler
 type Log struct {
 	mux        *sync.Mutex
 	pool       sync.Pool //临时对象池
@@ -81,7 +83,8 @@ func (l *Log) SetDelim(delim string) {
 	l.delim = delim
 }
 
-// if warp this package, please reset call depth. Default is 2.
+// SetCallDepth calls runtime.Caller.
+// if warp this package, reset call depth. Default is 2.
 func (l *Log) SetCallDepth(depth int) {
 	l.depth = depth
 }
@@ -136,7 +139,7 @@ func (l *Log) Fatal(format string, v ...interface{}) {
 	l.Output(FATAL, format, v...)
 }
 
-// panic: 并且打印当前堆栈信息
+// Panic calls l.Output to write the log as level panic.
 func (l *Log) Panic(format string, v ...interface{}) {
 	l.Output(PANIC, format, v...)
 	panic(fmt.Sprintf(format, v...))

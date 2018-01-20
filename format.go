@@ -5,9 +5,10 @@ import (
 	"fmt"
 )
 
-const DEFAULT_FORMAT = "TIME [LEVEL] FILE:LINE MESSAGE"
-
 const (
+	// DEFAULTFORMAT default log message format.
+	DEFAULTFORMAT = "TIME [LEVEL] FILE:LINE MESSAGE"
+	// ModeColor
 	ModeColor = 1 << iota
 )
 

@@ -25,7 +25,7 @@ type FileWrite struct {
 	cnt      int //count
 }
 
-// NewFile
+// NewFile create a FileWrite with implements FileWriter interface.
 func NewFile(cname string) FileWriter {
 	w := &FileWrite{cname: cname}
 	w.open()
@@ -84,6 +84,6 @@ func (w *FileWrite) Write(p []byte) (int, error) {
 	}
 	n, err := w.fd.Write(p)
 	w.curBytes += n
-	w.curLines += 1
+	w.curLines++
 	return n, err
 }
