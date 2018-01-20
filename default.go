@@ -1,6 +1,9 @@
 package log
 
-import "fmt"
+import (
+	"fmt"
+	"io/ioutil"
+)
 
 func SetTextFormat(format string, mode int) {
 	GetLogger(__default__).SetFormatter(NewTextFormat(format, mode))
@@ -36,6 +39,12 @@ func Panic(format string, v ...interface{}) {
 
 func Errorf(format string, v ...interface{}) error {
 	return GetLogger(__default__).Errorf(format, v...)
+}
+
+// OutputWithFile write to file, It truncates file before writing.
+func OutputWithFile(name string, format string, v ...interface{}) error {
+	msg := fmt.Sprintf(format, v...)
+	return ioutil.WriteFile(name, []byte(msg), 0644)
 }
 
 func ConsoleWithRed(format string, v ...interface{}) {
