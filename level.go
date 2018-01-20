@@ -21,3 +21,14 @@ var LevelMap = map[uint8]string{
 	FATAL: "F",
 	PANIC: "P",
 }
+
+// LevelColor
+var LevelColor = map[uint8]uint8{
+	DEBUG: blue,
+	TRACE: green,
+	INFO:  none,
+	WARN:  yellow,
+	ERROR: magenta,
+	FATAL: red,
+	PANIC: blue2,
+}

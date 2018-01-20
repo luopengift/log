@@ -35,14 +35,14 @@ type Log struct {
 func NewLog(name string, out io.Writer) *Log {
 	return &Log{
 		mux:        new(sync.Mutex),
-		pool:       sync.Pool{New: func() interface{} { return new(LogRecord) }},
+		pool:       sync.Pool{New: func() interface{} { return new(Record) }},
 		name:       name,
 		mode:       ModeSync,
 		level:      DEBUG,
 		depth:      2,
 		delim:      "\n",
 		timeFormat: time.RFC3339,
-		Formatter:  NewTextFormat(DEFAULT_FORMAT, 0),
+		Formatter:  NewTextFormat(DEFAULTFORMAT, 0),
 		out:        out,
 	}
 }
@@ -96,7 +96,7 @@ func (l *Log) Output(lv uint8, format string, v ...interface{}) {
 	if lv < l.level {
 		return
 	}
-	ctn := l.pool.Get().(*LogRecord)
+	ctn := l.pool.Get().(*Record)
 	ctn.Time = time.Now().Format(l.timeFormat)
 	ctn.Level = lv
 	ctn.Module = l.name

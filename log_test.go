@@ -5,6 +5,10 @@ import (
 	"os"
 	"testing"
 )
+func Test_Default(t *testing.T) {
+	Info("Debug")
+	Warn("watn")
+}
 
 func Test_File(t *testing.T) {
 	filelog := NewFile("/tmp/zzz/test.log")
@@ -20,7 +24,7 @@ func Test_File(t *testing.T) {
 
 func Test_Stdout(t *testing.T) {
 	log := NewLog("console", os.Stdout)
-	log.SetFormatter(NewTextFormat("TIME LEVEL MODULE PATH FILE:FUNCNAME:LINE MESSAGE", 1))
+	log.SetFormatter(NewTextFormat("TIME LEVEL MODULE PATH FILE:FUNCNAME:LINE MESSAGE", ModeColor))
 	fmt.Println(Logger)
 
 	log.Debug("DEUBG")
@@ -30,5 +34,5 @@ func Test_Stdout(t *testing.T) {
 	log.Fatal("FATAL")
 
 	Error("%s", "$$$$$")
-	Display("log", log)
+	//Display("log", log)
 }

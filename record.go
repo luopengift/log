@@ -6,8 +6,8 @@ import (
 	"strings"
 )
 
-// LogRecord defines a log message struct.
-type LogRecord struct {
+// Record defines a log message event.
+type Record struct {
 	Time    string  `json:"timesatmp,omitempty"` //时间
 	Level   uint8   `json:"level,omitempty"`     //日志级别
 	Module  string  `json:"module,omitempty"`    //日志钩子(loghandler),默认是"__ROOT__"
@@ -23,9 +23,10 @@ type LogRecord struct {
 // MODULE: log handler, if used. Default is __default__
 // FUNCNAME: log function name
 // PATH: log file path
+// FILE: log filename
 // LINE: log line
 // MESSAGE: log message
-func (rcd *LogRecord) Format(str string) string {
+func (rcd *Record) Format(str string) string {
 	str = strings.Replace(str, "TIME", rcd.Time, -1)
 	str = strings.Replace(str, "LEVEL", LevelMap[rcd.Level], -1)
 	str = strings.Replace(str, "MODULE", rcd.Module, -1)

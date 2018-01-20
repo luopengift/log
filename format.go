@@ -14,14 +14,14 @@ const (
 
 // Formatter interface
 type Formatter interface {
-	Format(rcd *LogRecord) string
+	Format(rcd *Record) string
 }
 
 // NullFormat implements Formatter interface.
 type NullFormat struct{}
 
 // Format only output log msg.
-func (f *NullFormat) Format(rcd *LogRecord) string {
+func (f *NullFormat) Format(rcd *Record) string {
 	return rcd.Msg
 }
 
@@ -29,7 +29,7 @@ func (f *NullFormat) Format(rcd *LogRecord) string {
 type JSONFormat struct{}
 
 // Format marshal log record.
-func (f *JSONFormat) Format(rcd *LogRecord) string {
+func (f *JSONFormat) Format(rcd *Record) string {
 	b, _ := json.Marshal(rcd)
 	return string(b)
 }
@@ -46,10 +46,10 @@ func NewTextFormat(f string, mode int) Formatter {
 }
 
 // Format format log record to requird format.
-func (f *TextFormat) Format(rcd *LogRecord) string {
+func (f *TextFormat) Format(rcd *Record) string {
 	msg := rcd.Format(f.format)
 	if f.mode&ModeColor != 0 {
-		return setColor(rcd.Level, msg)
+		return color(LevelColor[rcd.Level], msg)
 	}
 	return msg
 }
@@ -58,6 +58,6 @@ func (f *TextFormat) Format(rcd *LogRecord) string {
 type KvFormat struct{}
 
 // Format TODO.
-func (f *KvFormat) Format(rcd *LogRecord) string {
+func (f *KvFormat) Format(rcd *Record) string {
 	return fmt.Sprintf("TODO:kv format, %s", rcd.Msg)
 }
