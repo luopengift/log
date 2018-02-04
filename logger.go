@@ -55,7 +55,7 @@ func init() {
 	_Default = "__ROOT__"
 	Logger = make(map[string]*Log)
 
-	root := NewLog("__ROOT__", os.Stdout)
+	root := NewLog("__ROOT__", os.Stderr)
 	root.SetFormatter(NewTextFormat(DEFAULTFORMAT, ModeColor))
 	root.SetTimeFormat("2006-01-02 15:04:05.000")
 	root.SetCallDepth(3)

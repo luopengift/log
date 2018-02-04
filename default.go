@@ -3,6 +3,7 @@ package log
 import (
 	"fmt"
 	"io/ioutil"
+	"os"
 )
 
 // SetTextFormat sets log message format
@@ -61,32 +62,32 @@ func OutputWithFile(name string, format string, v ...interface{}) error {
 	return ioutil.WriteFile(name, []byte(msg), 0644)
 }
 
-// ConsoleWithRed write message to stdout with red color
+// ConsoleWithRed write message to stderr with red color
 func ConsoleWithRed(format string, v ...interface{}) {
 	msg := fmt.Sprintf(format, v...)
-	fmt.Println(color(red, msg))
+	fmt.Fprintln(os.Stderr, color(red, msg))
 }
 
-// ConsoleWithGreen write message to stdout with red color
+// ConsoleWithGreen write message to stderr with red color
 func ConsoleWithGreen(format string, v ...interface{}) {
 	msg := fmt.Sprintf(format, v...)
-	fmt.Println(color(green, msg))
+	fmt.Fprintln(os.Stderr, color(green, msg))
 }
 
-// ConsoleWithYellow write message to stdout with yellow color.
+// ConsoleWithYellow write message to stderr with yellow color.
 func ConsoleWithYellow(format string, v ...interface{}) {
 	msg := fmt.Sprintf(format, v...)
-	fmt.Println(color(yellow, msg))
+	fmt.Fprintln(os.Stderr, color(yellow, msg))
 }
 
-// ConsoleWithBlue write message to stdout with blue color.
+// ConsoleWithBlue write message to stderr with blue color.
 func ConsoleWithBlue(format string, v ...interface{}) {
 	msg := fmt.Sprintf(format, v...)
-	fmt.Println(color(blue, msg))
+	fmt.Fprintln(os.Stderr, color(blue, msg))
 }
 
-// ConsoleWithMagenta write message to stdout with magenta color.
+// ConsoleWithMagenta write message to stderr with magenta color.
 func ConsoleWithMagenta(format string, v ...interface{}) {
 	msg := fmt.Sprintf(format, v...)
-	fmt.Println(color(magenta, msg))
+	fmt.Fprintln(os.Stderr, color(magenta, msg))
 }
