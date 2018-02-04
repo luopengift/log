@@ -2,16 +2,22 @@ package log
 
 import (
 	"fmt"
+	"io"
 	"io/ioutil"
 	"os"
 )
 
-// SetTextFormat sets log message format
+// SetOutput sets default log output.
+func SetOutput(out io.Writer) {
+	GetLogger(_Default).SetOutput(out)
+}
+
+// SetTextFormat sets default log message format.
 func SetTextFormat(format string, mode int) {
 	GetLogger(_Default).SetFormatter(NewTextFormat(format, mode))
 }
 
-// SetTimeFormat sets time format, if TIME is enabled.
+// SetTimeFormat sets default time format, if TIME is enabled.
 func SetTimeFormat(format string) {
 	GetLogger(_Default).SetTimeFormat(format)
 }
