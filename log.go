@@ -28,11 +28,11 @@ type Log struct {
 	delim      string    //每条日志的分隔符
 	timeFormat string    //日志时间格式
 	Formatter            //日志格式化接口,实现Format() string
-	out        io.Writer //日志输出点
+	out        []io.Writer //日志输出点
 }
 
 // NewLog init a log with default config.
-func NewLog(name string, out io.Writer) *Log {
+func NewLog(name string, out ...io.Writer) *Log {
 	return &Log{
 		mux:        new(sync.Mutex),
 		pool:       sync.Pool{New: func() interface{} { return new(Record) }},
@@ -49,7 +49,7 @@ func NewLog(name string, out io.Writer) *Log {
 
 // SetOutput sets the output destination for Log.
 func (l *Log) SetOutput(out io.Writer) {
-	l.out = out
+	l.out = append(l.out, out)
 }
 
 // SetTimeFormat sets the output time format for Log.
@@ -103,7 +103,9 @@ func (l *Log) Output(lv uint8, format string, v ...interface{}) {
 	ctn.Msg = fmt.Sprintf(format, v...)
 	ctn.FuncPtr, ctn.File, ctn.Line, _ = runtime.Caller(l.depth)
 	msg := l.Format(ctn) + l.delim
-	fmt.Fprint(l.out, msg)
+	for _, out := range l.out {
+		fmt.Fprint(out, msg)
+	}
 	l.pool.Put(ctn)
 }
 
