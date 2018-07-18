@@ -11,7 +11,7 @@ const (
 	PANIC
 )
 
-// LevelMap
+// LevelMap level map
 var LevelMap = map[uint8]string{
 	DEBUG: "D",
 	TRACE: "T",
@@ -22,7 +22,7 @@ var LevelMap = map[uint8]string{
 	PANIC: "P",
 }
 
-// LevelColor
+// LevelColor Level color
 var LevelColor = map[uint8]uint8{
 	DEBUG: blue,
 	TRACE: green,
