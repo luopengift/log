@@ -61,7 +61,7 @@ func (w *FileWrite) open() (err error) {
 }
 
 func (w *FileWrite) rorate() error {
-	if err := w.fd.Close(); err != nil {
+	if err := w.Close(); err != nil {
 		return err
 	}
 	w.cnt = 0
@@ -86,4 +86,9 @@ func (w *FileWrite) Write(p []byte) (int, error) {
 	w.curBytes += n
 	w.curLines++
 	return n, err
+}
+
+// Close close file
+func (w *FileWrite) Close() error {
+	return w.fd.Close()
 }
