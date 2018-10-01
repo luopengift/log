@@ -8,6 +8,7 @@ import (
 // FileWriter implements io.Writer interface,
 type FileWriter interface {
 	Write([]byte) (int, error)
+	Close() error
 	SetMaxBytes(int)
 	SetMaxLines(int)
 }
