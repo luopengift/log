@@ -35,6 +35,11 @@ func SetDefaultLogger(name string) {
 	_Default = name
 }
 
+// GetDefaultLogger get default Log
+func GetDefaultLogger() string {
+	return _Default
+}
+
 // ResetDefaultLogger set default Log with __ROOT__.
 func ResetDefaultLogger() {
 	_Default = "__ROOT__"

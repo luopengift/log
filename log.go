@@ -48,53 +48,65 @@ func NewLog(name string, out ...io.Writer) *Log {
 }
 
 // SetOutput sets the output destination for Log.
-func (l *Log) SetOutput(out io.Writer) {
+func (l *Log) SetOutput(out io.Writer) *Log {
 	l.out = append(l.out, out)
+	return l
 }
 
 // SetTimeFormat sets the output time format for Log.
 // Default is RFC3339.
-func (l *Log) SetTimeFormat(timeFormat string) {
+func (l *Log) SetTimeFormat(timeFormat string) *Log {
 	l.timeFormat = timeFormat
+	return l
 }
 
 // SetFormatter sets the output log format for Log.
 // Input params must implement Formatter interface.
 // Default is NewTextFormat(DEFAULT_FORMAT, 0).
-func (l *Log) SetFormatter(format Formatter) {
+func (l *Log) SetFormatter(format Formatter) *Log {
 	l.Formatter = format
+	return l
+}
+
+// SetTextFormat sets log message format.
+func (l *Log) SetTextFormat(format string, mode int) *Log {
+	return l.SetFormatter(NewTextFormat(format, mode))
 }
 
 // SetLevel sets the output level for Log.
 // Default is DEBUG
-func (l *Log) SetLevel(level uint8) {
+func (l *Log) SetLevel(level uint8) *Log {
 	l.level = level
+	return l
 }
 
 // SetMode sets the output mode for Log.
 // Default is. TODO.
-func (l *Log) SetMode(mode int) {
+func (l *Log) SetMode(mode int) *Log {
 	l.mode = mode
+	return l
 }
 
 // SetDelim sets the output split of Log.
 // Default is "\n".
-func (l *Log) SetDelim(delim string) {
+func (l *Log) SetDelim(delim string) *Log {
 	l.delim = delim
+	return l
 }
 
 // SetCallDepth calls runtime.Caller.
 // if warp this package, reset call depth. Default is 2.
-func (l *Log) SetCallDepth(depth int) {
+func (l *Log) SetCallDepth(depth int) *Log {
 	l.depth = depth
+	return l
 }
 
 // Output writes the output for a logging event.
-func (l *Log) Output(lv uint8, format string, v ...interface{}) {
+func (l *Log) Output(lv uint8, format string, v ...interface{}) *Log {
 	l.mux.Lock()
 	defer l.mux.Unlock()
 	if lv < l.level {
-		return
+		return l
 	}
 	ctn := l.pool.Get().(*Record)
 	ctn.Time = time.Now().Format(l.timeFormat)
@@ -107,38 +119,40 @@ func (l *Log) Output(lv uint8, format string, v ...interface{}) {
 		fmt.Fprint(out, msg)
 	}
 	l.pool.Put(ctn)
+	return l
 }
 
 // Trace calls l.Output to write the log as level trace,
 // and print stack information to stdout.
-func (l *Log) Trace(format string, v ...interface{}) {
+func (l *Log) Trace(format string, v ...interface{}) *Log {
 	debug.PrintStack()
 	l.Output(TRACE, format, v...)
+	return l
 }
 
 // Debug calls l.Output to write the log as level debug.
-func (l *Log) Debug(format string, v ...interface{}) {
-	l.Output(DEBUG, format, v...)
+func (l *Log) Debug(format string, v ...interface{}) *Log {
+	return l.Output(DEBUG, format, v...)
 }
 
 // Info calls l.Output to write the log as level info.
-func (l *Log) Info(format string, v ...interface{}) {
-	l.Output(INFO, format, v...)
+func (l *Log) Info(format string, v ...interface{}) *Log {
+	return l.Output(INFO, format, v...)
 }
 
 // Warn calls l.Output to write the log as level warn.
-func (l *Log) Warn(format string, v ...interface{}) {
-	l.Output(WARN, format, v...)
+func (l *Log) Warn(format string, v ...interface{}) *Log {
+	return l.Output(WARN, format, v...)
 }
 
 // Error calls l.Output to write the log as level error.
-func (l *Log) Error(format string, v ...interface{}) {
-	l.Output(ERROR, format, v...)
+func (l *Log) Error(format string, v ...interface{}) *Log {
+	return l.Output(ERROR, format, v...)
 }
 
 // Fatal calls l.Output to write the log as level fatal.
-func (l *Log) Fatal(format string, v ...interface{}) {
-	l.Output(FATAL, format, v...)
+func (l *Log) Fatal(format string, v ...interface{}) *Log {
+	return l.Output(FATAL, format, v...)
 }
 
 // Panic calls l.Output to write the log as level panic.

@@ -8,48 +8,53 @@ import (
 )
 
 // SetOutput sets default log output.
-func SetOutput(out io.Writer) {
-	GetLogger(_Default).SetOutput(out)
+func SetOutput(out io.Writer) *Log {
+	return GetLogger(_Default).SetOutput(out)
 }
 
 // SetTextFormat sets default log message format.
-func SetTextFormat(format string, mode int) {
-	GetLogger(_Default).SetFormatter(NewTextFormat(format, mode))
+func SetTextFormat(format string, mode int) *Log {
+	return GetLogger(_Default).SetFormatter(NewTextFormat(format, mode))
 }
 
 // SetTimeFormat sets default time format, if TIME is enabled.
-func SetTimeFormat(format string) {
-	GetLogger(_Default).SetTimeFormat(format)
+func SetTimeFormat(format string) *Log {
+	return GetLogger(_Default).SetTimeFormat(format)
+}
+
+// SetLevel set default level.
+func SetLevel(level uint8) *Log {
+	return GetLogger(_Default).SetLevel(level)
 }
 
 // Trace calls default output to write the log as level trace.
-func Trace(format string, v ...interface{}) {
-	GetLogger(_Default).Trace(format, v...)
+func Trace(format string, v ...interface{}) *Log {
+	return GetLogger(_Default).Trace(format, v...)
 }
 
 // Debug calls default output to write the log as level debug.
-func Debug(format string, v ...interface{}) {
-	GetLogger(_Default).Debug(format, v...)
+func Debug(format string, v ...interface{}) *Log {
+	return GetLogger(_Default).Debug(format, v...)
 }
 
 // Info calls default output to write the log as level info.
-func Info(format string, v ...interface{}) {
-	GetLogger(_Default).Info(format, v...)
+func Info(format string, v ...interface{}) *Log {
+	return GetLogger(_Default).Info(format, v...)
 }
 
 // Warn calls default output to write the log as level warn.
-func Warn(format string, v ...interface{}) {
-	GetLogger(_Default).Warn(format, v...)
+func Warn(format string, v ...interface{}) *Log {
+	return GetLogger(_Default).Warn(format, v...)
 }
 
 // Error calls default output to write the log as level error.
-func Error(format string, v ...interface{}) {
-	GetLogger(_Default).Error(format, v...)
+func Error(format string, v ...interface{}) *Log {
+	return GetLogger(_Default).Error(format, v...)
 }
 
 // Fatal calls default output to write the log as level fatal.
-func Fatal(format string, v ...interface{}) {
-	GetLogger(_Default).Error(format, v...)
+func Fatal(format string, v ...interface{}) *Log {
+	return GetLogger(_Default).Error(format, v...)
 }
 
 // Panic calls default output to write the log as level panic.

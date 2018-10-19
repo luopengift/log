@@ -41,7 +41,7 @@ type TextFormat struct {
 }
 
 // NewTextFormat defines TextFormat. log record format and color.
-func NewTextFormat(f string, mode int) Formatter {
+func NewTextFormat(f string, mode int) *TextFormat {
 	return &TextFormat{format: f, mode: mode}
 }
 
