@@ -48,8 +48,8 @@ func NewLog(name string, out ...io.Writer) *Log {
 }
 
 // SetOutput sets the output destination for Log.
-func (l *Log) SetOutput(out io.Writer) *Log {
-	l.out = append(l.out, out)
+func (l *Log) SetOutput(out ...io.Writer) *Log {
+	l.out = out
 	return l
 }
 
