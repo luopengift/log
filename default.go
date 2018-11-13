@@ -8,8 +8,8 @@ import (
 )
 
 // SetOutput sets default log output.
-func SetOutput(out io.Writer) *Log {
-	return GetLogger(_Default).SetOutput(out)
+func SetOutput(out ...io.Writer) *Log {
+	return GetLogger(_Default).SetOutput(out...)
 }
 
 // SetTextFormat sets default log message format.
