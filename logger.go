@@ -62,7 +62,7 @@ func init() {
 
 	root := NewLog("__ROOT__", os.Stderr)
 	root.SetFormatter(NewTextFormat(DEFAULTFORMAT, ModeColor))
-	root.SetTimeFormat("2006-01-02 15:04:05.000")
+	//root.SetTimeFormat("2006-01-02 15:04:05.000")
 	root.SetCallDepth(3)
 	AddLogger(root)
 }
