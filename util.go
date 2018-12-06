@@ -18,9 +18,15 @@ var (
 )
 
 // NameWithTime formats string by time.
-func NameWithTime(str string) string {
+func NameWithTime(str string, t ...time.Time) string {
+	var now time.Time
+	if len(t) == 0 {
+		now = time.Now()
+	} else {
+		now = t[1]
+	}
 	for k, v := range m {
-		str = strings.Replace(str, k, time.Now().Format(v), -1)
+		str = strings.Replace(str, k, now.Format(v), -1)
 	}
 	return str
 }
