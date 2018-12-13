@@ -2,7 +2,11 @@ package log
 
 import (
 	"os"
+	"path"
+	"path/filepath"
+	"sort"
 	"strconv"
+	"strings"
 )
 
 // FileWriter implements io.Writer interface,
@@ -11,6 +15,7 @@ type FileWriter interface {
 	Close() error
 	SetMaxBytes(int)
 	SetMaxLines(int)
+	SetMaxIndex(int)
 }
 
 // FileWrite implements FileWriter interface.
@@ -23,12 +28,13 @@ type FileWrite struct {
 	curBytes int
 	maxLines int
 	curLines int
+	maxIndex int
 	cnt      int //count
 }
 
 // NewFile create a FileWrite with implements FileWriter interface.
 func NewFile(cname string) FileWriter {
-	w := &FileWrite{cname: cname}
+	w := &FileWrite{cname: cname, curPath: path.Dir(cname)}
 	w.open()
 	return w
 }
@@ -41,6 +47,11 @@ func (w *FileWrite) SetMaxBytes(maxBytes int) {
 //SetMaxLines sets max lines to rorate.
 func (w *FileWrite) SetMaxLines(maxLines int) {
 	w.maxLines = maxLines
+}
+
+//SetMaxIndex sets max lines to rorate.
+func (w *FileWrite) SetMaxIndex(maxIndex int) {
+	w.maxIndex = maxIndex
 }
 
 // Name gets current filename log
@@ -56,6 +67,22 @@ func (w *FileWrite) Name() string {
 }
 
 func (w *FileWrite) open() (err error) {
+	if w.maxIndex > 0 {
+		var files files
+		filepath.Walk(w.curPath, func(path string, info os.FileInfo, err error) error {
+			if info.IsDir() || !strings.Contains(info.Name(), ".log") {
+				return nil
+			}
+			files = append(files, info)
+			return nil
+		})
+		if files.Len() > w.maxIndex {
+			sort.Sort(files)
+			for _, info := range files[w.maxIndex-1:] {
+				os.Remove(path.Join(w.curPath, info.Name()))
+			}
+		}
+	}
 	w.curFile = w.Name()
 	w.fd, err = os.OpenFile(w.curFile, os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0644)
 	return

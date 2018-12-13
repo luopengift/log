@@ -1,6 +1,7 @@
 package log
 
 import (
+	"os"
 	"runtime"
 	"strings"
 	"time"
@@ -48,4 +49,18 @@ func FuncName(pc uintptr) string {
 		name = name[period+1:]
 	}
 	return name
+}
+
+type files []os.FileInfo
+
+func (fs files) Len() int {
+	return len(fs)
+}
+
+func (fs files) Less(i, j int) bool {
+	return fs[i].ModTime().After(fs[j].ModTime())
+}
+
+func (fs files) Swap(i, j int) {
+	fs[i], fs[j] = fs[j], fs[i]
 }
