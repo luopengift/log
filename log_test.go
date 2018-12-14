@@ -35,5 +35,5 @@ func Test_Stdout(t *testing.T) {
 	log.Fatal("FATAL")
 
 	Error("%s", "$$$$$")
-	Display("log", log)
+	//dump("log", log)
 }

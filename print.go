@@ -3,6 +3,7 @@ package log
 import (
 	"bytes"
 	"fmt"
+
 	//	"log"
 	"reflect"
 	"runtime"
@@ -16,76 +17,12 @@ type pointerInfo struct {
 	used []int
 }
 
-// Display print the data in console
-func Display(data ...interface{}) {
-	display(true, data...)
-}
-
-// GetDisplayString return data print string
-func GetDisplayString(data ...interface{}) string {
-	return display(false, data...)
-}
-
-func display(displayed bool, data ...interface{}) string {
-	var pc, file, line, ok = runtime.Caller(2)
-
-	if !ok {
-		return ""
-	}
-
+// dump return data dump and format bytes
+func dump(data interface{}) []byte {
 	var buf = new(bytes.Buffer)
-
-	fmt.Fprintf(buf, "[Debug] at %s() [%s:%d]\n", FuncName(pc), file, line)
-
-	fmt.Fprintf(buf, "\n[Variables]\n")
-
-	for i := 0; i < len(data); i += 2 {
-		var output = fomateinfo(len(data[i].(string))+3, data[i+1])
-		fmt.Fprintf(buf, "%s = %s", data[i], output)
-	}
-
-	if displayed {
-		fmt.Print(buf)
-	}
-	return buf.String()
-}
-
-// return data dump and format bytes
-func fomateinfo(headlen int, data ...interface{}) []byte {
-	var buf = new(bytes.Buffer)
-
-	if len(data) > 1 {
-		fmt.Fprint(buf, "    ")
-
-		fmt.Fprint(buf, "[")
-
-		fmt.Fprintln(buf)
-	}
-
-	for k, v := range data {
-		var buf2 = new(bytes.Buffer)
-		var pointers *pointerInfo
-		var interfaces = make([]reflect.Value, 0, 10)
-
-		printKeyValue(buf2, reflect.ValueOf(v), &pointers, &interfaces, nil, true, "    ", 1)
-
-		if k < len(data)-1 {
-			fmt.Fprint(buf2, ", ")
-		}
-
-		fmt.Fprintln(buf2)
-
-		buf.Write(buf2.Bytes())
-	}
-
-	if len(data) > 1 {
-		fmt.Fprintln(buf)
-
-		fmt.Fprint(buf, "    ")
-
-		fmt.Fprint(buf, "]")
-	}
-
+	var pointers *pointerInfo
+	var interfaces = make([]reflect.Value, 0, 10)
+	printKeyValue(buf, reflect.ValueOf(data), &pointers, &interfaces, nil, true, "    ", 1)
 	return buf.Bytes()
 }
 
@@ -341,8 +278,9 @@ func printKeyValue(buf *bytes.Buffer, val reflect.Value, pointers **pointerInfo,
 		}
 
 		fmt.Fprint(buf, "}")
-	case reflect.Chan:
-		fmt.Fprint(buf, val.Type())
+	case reflect.Chan, reflect.Func:
+		s := fmt.Sprintf("%v(%v)", val.Type(), val)
+		fmt.Fprint(buf, s)
 	case reflect.Invalid:
 		fmt.Fprint(buf, "invalid")
 	default:

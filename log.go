@@ -28,11 +28,11 @@ type Log struct {
 	delim      string      //每条日志的分隔符
 	timeFormat string      //日志时间格式
 	Formatter              //日志格式化接口,实现Format() string
-	out        []io.Writer //日志输出点
+	outs       []io.Writer //日志输出点
 }
 
 // NewLog init a log with default config.
-func NewLog(name string, out ...io.Writer) *Log {
+func NewLog(name string, outs ...io.Writer) *Log {
 	return &Log{
 		mux:        new(sync.Mutex),
 		pool:       sync.Pool{New: func() interface{} { return new(Record) }},
@@ -43,13 +43,13 @@ func NewLog(name string, out ...io.Writer) *Log {
 		delim:      "\n",
 		timeFormat: time.RFC3339,
 		Formatter:  NewTextFormat(DEFAULTFORMAT, 0),
-		out:        out,
+		outs:       outs,
 	}
 }
 
 // SetOutput sets the output destination for Log.
-func (l *Log) SetOutput(out ...io.Writer) *Log {
-	l.out = out
+func (l *Log) SetOutput(outs ...io.Writer) *Log {
+	l.outs = outs
 	return l
 }
 
@@ -102,7 +102,7 @@ func (l *Log) SetCallDepth(depth int) *Log {
 }
 
 // Output writes the output for a logging event.
-func (l *Log) Output(lv uint8, format string, v ...interface{}) *Log {
+func (l *Log) output(lv uint8, format string, v ...interface{}) *Log {
 	l.mux.Lock()
 	defer l.mux.Unlock()
 	if lv < l.level {
@@ -115,10 +115,16 @@ func (l *Log) Output(lv uint8, format string, v ...interface{}) *Log {
 	ctn.Msg = fmt.Sprintf(format, v...)
 	ctn.FuncPtr, ctn.File, ctn.Line, _ = runtime.Caller(l.depth)
 	msg := l.Format(ctn) + l.delim
-	for _, out := range l.out {
+	for _, out := range l.outs {
 		fmt.Fprint(out, msg)
 	}
 	l.pool.Put(ctn)
+	return l
+}
+
+// Display display v
+func (l *Log) Display(format string, v ...interface{}) *Log {
+	l.output(WARN, format, string(dump(v)))
 	return l
 }
 
@@ -126,38 +132,38 @@ func (l *Log) Output(lv uint8, format string, v ...interface{}) *Log {
 // and print stack information to stdout.
 func (l *Log) Trace(format string, v ...interface{}) *Log {
 	debug.PrintStack()
-	l.Output(TRACE, format, v...)
+	l.output(TRACE, format, v...)
 	return l
 }
 
 // Debug calls l.Output to write the log as level debug.
 func (l *Log) Debug(format string, v ...interface{}) *Log {
-	return l.Output(DEBUG, format, v...)
+	return l.output(DEBUG, format, v...)
 }
 
 // Info calls l.Output to write the log as level info.
 func (l *Log) Info(format string, v ...interface{}) *Log {
-	return l.Output(INFO, format, v...)
+	return l.output(INFO, format, v...)
 }
 
 // Warn calls l.Output to write the log as level warn.
 func (l *Log) Warn(format string, v ...interface{}) *Log {
-	return l.Output(WARN, format, v...)
+	return l.output(WARN, format, v...)
 }
 
 // Error calls l.Output to write the log as level error.
 func (l *Log) Error(format string, v ...interface{}) *Log {
-	return l.Output(ERROR, format, v...)
+	return l.output(ERROR, format, v...)
 }
 
 // Fatal calls l.Output to write the log as level fatal.
 func (l *Log) Fatal(format string, v ...interface{}) *Log {
-	return l.Output(FATAL, format, v...)
+	return l.output(FATAL, format, v...)
 }
 
 // Panic calls l.Output to write the log as level panic.
 func (l *Log) Panic(format string, v ...interface{}) {
-	l.Output(PANIC, format, v...)
+	l.output(PANIC, format, v...)
 	panic(fmt.Sprintf(format, v...))
 }
 
