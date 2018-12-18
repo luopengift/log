@@ -27,11 +27,6 @@ func SetLevel(level uint8) *Log {
 	return GetLogger(_Default).SetLevel(level)
 }
 
-// Display display
-func Display(format string, v ...interface{}) *Log {
-	return GetLogger(_Default).Display(format, v...)
-}
-
 // Trace calls default output to write the log as level trace.
 func Trace(format string, v ...interface{}) *Log {
 	return GetLogger(_Default).Trace(format, v...)

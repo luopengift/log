@@ -122,12 +122,6 @@ func (l *Log) output(lv uint8, format string, v ...interface{}) *Log {
 	return l
 }
 
-// Display display v
-func (l *Log) Display(format string, v ...interface{}) *Log {
-	l.output(WARN, format, string(dump(v)))
-	return l
-}
-
 // Trace calls l.Output to write the log as level trace,
 // and print stack information to stdout.
 func (l *Log) Trace(format string, v ...interface{}) *Log {
