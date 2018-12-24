@@ -54,7 +54,7 @@ func Error(format string, v ...interface{}) *Log {
 
 // Fatal calls default output to write the log as level fatal.
 func Fatal(format string, v ...interface{}) *Log {
-	return GetLogger(_Default).Error(format, v...)
+	return GetLogger(_Default).Fatal(format, v...)
 }
 
 // Panic calls default output to write the log as level panic.

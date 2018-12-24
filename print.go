@@ -17,7 +17,7 @@ type pointerInfo struct {
 	used []int
 }
 
-// dump return data dump and format bytes
+// Dump return data dump and format bytes
 func Dump(data interface{}) []byte {
 	var buf = new(bytes.Buffer)
 	var pointers *pointerInfo
