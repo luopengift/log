@@ -7,69 +7,66 @@ import (
 	"os"
 )
 
+var log = NewLog("root", os.Stderr)
+
 // SetOutput sets default log output.
 func SetOutput(out ...io.Writer) *Log {
-	return GetLogger(_Default).SetOutput(out...)
+	return log.SetOutput(out...)
 }
 
 // SetTextFormat sets default log message format.
 func SetTextFormat(format string, mode int) *Log {
-	return GetLogger(_Default).SetFormatter(NewTextFormat(format, mode))
+	return log.SetFormatter(NewTextFormat(format, mode))
 }
 
 // SetTimeFormat sets default time format, if TIME is enabled.
 func SetTimeFormat(format string) *Log {
-	return GetLogger(_Default).SetTimeFormat(format)
+	return log.SetTimeFormat(format)
 }
 
 // SetLevel set default level.
 func SetLevel(level uint8) *Log {
-	return GetLogger(_Default).SetLevel(level)
+	return log.SetLevel(level)
 }
 
 // Output output
 func Output(format string, v ...interface{}) *Log {
-	return GetLogger(_Default).Output(format, v...)
+	return log.Output(format, v...)
 }
 
 // Trace calls default output to write the log as level trace.
 func Trace(format string, v ...interface{}) *Log {
-	return GetLogger(_Default).Trace(format, v...)
+	return log.Trace(format, v...)
 }
 
-// Debug calls default output to write the log as level debug.
-func Debug(format string, v ...interface{}) *Log {
-	return GetLogger(_Default).Debug(format, v...)
+// Debugf calls default output to write the log as level debug.
+func Debugf(format string, v ...interface{}) {
+	log.Debugf(format, v...)
 }
 
-// Info calls default output to write the log as level info.
-func Info(format string, v ...interface{}) *Log {
-	return GetLogger(_Default).Info(format, v...)
+// Infof calls default output to write the log as level info.
+func Infof(format string, v ...interface{}) {
+	log.Infof(format, v...)
 }
 
-// Warn calls default output to write the log as level warn.
-func Warn(format string, v ...interface{}) *Log {
-	return GetLogger(_Default).Warn(format, v...)
+// Warnf calls default output to write the log as level warn.
+func Warnf(format string, v ...interface{}) {
+	log.Warnf(format, v...)
 }
 
-// Error calls default output to write the log as level error.
-func Error(format string, v ...interface{}) *Log {
-	return GetLogger(_Default).Error(format, v...)
+// Errorf calls default output to write the log as level error.
+func Errorf(format string, v ...interface{}) {
+	log.Errorf(format, v...)
 }
 
-// Fatal calls default output to write the log as level fatal.
-func Fatal(format string, v ...interface{}) *Log {
-	return GetLogger(_Default).Fatal(format, v...)
+// Fatalf calls default output to write the log as level fatal.
+func Fatalf(format string, v ...interface{}) {
+	log.Fatalf(format, v...)
 }
 
 // Panic calls default output to write the log as level panic.
 func Panic(format string, v ...interface{}) {
-	GetLogger(_Default).Panic(format, v...)
-}
-
-// Errorf returns error interface with error message.
-func Errorf(format string, v ...interface{}) error {
-	return GetLogger(_Default).Errorf(format, v...)
+	log.Panic(format, v...)
 }
 
 // OutputWithFile write to file, It truncates file before writing.

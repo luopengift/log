@@ -1,14 +1,13 @@
 package log
 
 import (
-	"fmt"
 	"os"
 	"testing"
 )
 
 func Test_Default(t *testing.T) {
-	Info("Debug")
-	Warn("watn")
+	Infof("Debug")
+	Warnf("watn")
 }
 
 func Test_File(t *testing.T) {
@@ -18,7 +17,7 @@ func Test_File(t *testing.T) {
 	l.SetDelim("")
 	l.SetFormatter(&NullFormat{})
 	for i := 0; i < 10; i++ {
-		l.Debug("%d", i)
+		l.Debugf("%d", i)
 	}
 
 }
@@ -26,14 +25,14 @@ func Test_File(t *testing.T) {
 func Test_Stdout(t *testing.T) {
 	log := NewLog("console", os.Stdout)
 	log.SetFormatter(NewTextFormat("TIME LEVEL MODULE PATH FILE:FUNCNAME:LINE MESSAGE", ModeColor))
-	fmt.Println(Logger)
+	// fmt.Println(Logger)
 
-	log.Debug("DEUBG")
-	log.Info("INFO")
-	log.Warn("WARN")
-	log.Error("ERROR")
-	log.Fatal("FATAL")
+	log.Debugf("DEUBG")
+	log.Infof("INFO")
+	log.Warnf("WARN")
+	log.Errorf("ERROR")
+	log.Fatalf("FATAL")
 
-	Error("%s", "$$$$$")
+	Errorf("%s", "$$$$$")
 	//dump("log", log)
 }

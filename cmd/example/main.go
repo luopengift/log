@@ -10,6 +10,6 @@ func main() {
 	//l.SetDelim("")
 	l.SetFormatter(&log.NullFormat{})
 	for i := 0; i < 20; i++ {
-		l.Debug("%d", i)
+		l.Debugf("%d", i)
 	}
 }

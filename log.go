@@ -135,38 +135,33 @@ func (l *Log) Trace(format string, v ...interface{}) *Log {
 	return l
 }
 
-// Debug calls l.Output to write the log as level debug.
-func (l *Log) Debug(format string, v ...interface{}) *Log {
-	return l.output(DEBUG, format, v...)
+// Debugf calls l.Output to write the log as level debug.
+func (l *Log) Debugf(format string, v ...interface{}) {
+	l.output(DEBUG, format, v...)
 }
 
-// Info calls l.Output to write the log as level info.
-func (l *Log) Info(format string, v ...interface{}) *Log {
-	return l.output(INFO, format, v...)
+// Infof calls l.Output to write the log as level info.
+func (l *Log) Infof(format string, v ...interface{}) {
+	l.output(INFO, format, v...)
 }
 
-// Warn calls l.Output to write the log as level warn.
-func (l *Log) Warn(format string, v ...interface{}) *Log {
-	return l.output(WARN, format, v...)
+// Warnf calls l.Output to write the log as level warn.
+func (l *Log) Warnf(format string, v ...interface{}) {
+	l.output(WARN, format, v...)
 }
 
-// Error calls l.Output to write the log as level error.
-func (l *Log) Error(format string, v ...interface{}) *Log {
-	return l.output(ERROR, format, v...)
+// Errorf calls l.Output to write the log as level error.
+func (l *Log) Errorf(format string, v ...interface{}) {
+	l.output(ERROR, format, v...)
 }
 
-// Fatal calls l.Output to write the log as level fatal.
-func (l *Log) Fatal(format string, v ...interface{}) *Log {
-	return l.output(FATAL, format, v...)
+// Fatalf calls l.Output to write the log as level fatal.
+func (l *Log) Fatalf(format string, v ...interface{}) {
+	l.output(FATAL, format, v...)
 }
 
 // Panic calls l.Output to write the log as level panic.
 func (l *Log) Panic(format string, v ...interface{}) {
 	l.output(PANIC, format, v...)
 	panic(fmt.Sprintf(format, v...))
-}
-
-// Errorf implement error interface
-func (l *Log) Errorf(format string, v ...interface{}) error {
-	return fmt.Errorf(format, v...)
 }
